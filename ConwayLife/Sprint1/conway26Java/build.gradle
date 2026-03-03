@@ -23,6 +23,9 @@ dependencies {
     implementation name: '2p301'
     implementation name: 'unibo.basicomm23-1.0'
 
+    // Tests: project uses JUnit 4 in sources
+    testImplementation 'junit:junit:4.13.2'
+
 }
 
 sourceSets {
@@ -32,6 +35,23 @@ sourceSets {
     main.java.srcDirs += 'src/main/resources'
     test.java.srcDirs += 'src/main/java/test'         //test is specific
     test.java.srcDirs += 'src/main/kotlin/test'
+}
+
+// Configure JaCoCo tool version and test task reporting
+jacoco {
+    toolVersion = "0.8.10"
+}
+
+test {
+    // Ensure tests run with standard settings and generate readable output
+    useJUnit()
+    testLogging {
+        events "passed", "skipped", "failed"
+        exceptionFormat "short"
+        showStandardStreams = true
+    }
+    // Make sure the jacoco report runs after tests
+    finalizedBy jacocoTestReport
 }
 
 eclipse {
