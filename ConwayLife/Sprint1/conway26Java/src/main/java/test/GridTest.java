@@ -19,7 +19,7 @@ public class GridTest {
 	@Before
 	public void setup() {
 		System.out.println("GriTest | setup");
-		g = null;
+		g = new Grid(rowsSize, colsSize);
 	}
 
 	@After

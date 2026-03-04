@@ -102,7 +102,7 @@ public class LifeController implements GameController {
  	
 
 	protected void resetAndDisplayGrids(   ) {
-		life.resetGrids();
+		life.getGrid().reset();
 		if(outdev != null) outdev.displayGrid( life.getGrid() );
 	}
 	

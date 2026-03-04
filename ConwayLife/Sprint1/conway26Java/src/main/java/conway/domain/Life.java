@@ -40,7 +40,7 @@ public class Life implements ILife{
     	// Applichiamo le regole leggendo da currentGrid e scrivendo in nextGrid
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                int neighbors = currentGrid.countNeighborsLive(r, c);
+                int neighbors = countNeighborsLive(r, c);
                 boolean isAlive = currentGrid.isAlive(r, c);
                 //apply rules
                 if (isAlive) {
@@ -75,19 +75,7 @@ public class Life implements ILife{
 	}
 
 	@Override
-	public String gridRep() {
-		String str = "";
-		for (int i=0; i<rows; i++) {
-			for (int j=0; j<cols; j++) {
-				str+=this.currentGrid.isAlive(i, j)?"1":"0";
-			}
-			str+="\n";
-		}
-		return str;
-	}
-
-	@Override
-	public void setCell(int row, int col, boolean alive) {
+	public void setStatus(int row, int col, boolean alive) {
 		this.currentGrid.setStatus(row, col, alive);
 	}
 
@@ -100,14 +88,28 @@ public class Life implements ILife{
 	public IGrid getGrid() {
 		return this.currentGrid;
 	}
-
+	
 	@Override
-	public void resetGrids() {
-		this.gridA = new Grid(rows, cols);
-		this.gridB = new Grid(rows, cols);
-		this.currentGrid = this.gridA;
-		this.nextGrid = this.gridB;
-	}
+    public int countNeighborsLive(int row, int col) {
+		int count = 0;
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i == 0 && j == 0) continue;
+
+                int neighborRow = row + i;
+                int neighborCol = col + j;
+                
+                if (neighborRow >= 0 && neighborRow < rows && 
+                    neighborCol >= 0 && neighborCol < cols) {
+                    
+                    if (getCell(neighborRow,neighborCol).isAlive()) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
 	
 	
 	

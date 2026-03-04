@@ -19,7 +19,7 @@ public class LifeTest {
 	@Before
 	public void setup() {
 		System.out.println("LifeTest | setup");
-		l = null;
+		l = new Life(rowsSize, colsSize);
 	}
 
 	@After
@@ -53,50 +53,50 @@ public class LifeTest {
 	public void testSetGetCellCorretto() {
 		System.out.println("LifeTest | testSetGetCellCorretto");
 		l.setStatus(0, 0, true);
-		assertTrue(g.isAlive(0, 0));
+		assertTrue(l.isAlive(0, 0));
 		l.setStatus(0, 0, false);
 	}
 	
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetCellErrato1() {
 		System.out.println("LifeTest | testGetCellErrato1");
-	    g.isAlive(-1, -1);
+	    l.isAlive(-1, -1);
 	}
 	
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testGetCellErrato2() {
 		System.out.println("LifeTest | testGetCellErrato2");
-	    g.isAlive(rowsSize, colsSize);
+	    l.isAlive(rowsSize, colsSize);
 	}
 	
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetCellErrato1() {
 		System.out.println("LifeTest | testSetCellErrato1");
-	    g.setStatus(-1, -1, true);
+	    l.setStatus(-1, -1, true);
 	}
 	
 	@Test(expected = IndexOutOfBoundsException.class)
 	public void testSetCellErrato2() {
 		System.out.println("LifeTest | testSetCellErrato2");
-	    g.setStatus(rowsSize, colsSize, true);
+	    l.setStatus(rowsSize, colsSize, true);
 	}
 	
 	@Test
 	public void testGetRows() {
 		System.out.println("LifeTest | testGetRows");
-		assertTrue(g.getRows()==rowsSize);
+		assertTrue(l.getRows()==rowsSize);
 	}
 	
 	@Test
 	public void testGetCols() {
 		System.out.println("LifeTest | testGetCols");
-		assertTrue(g.getCols()==colsSize);
+		assertTrue(l.getCols()==colsSize);
 	}
 	
 	@Test
 	public void testGetGrid() {
 		System.out.println("LifeTest | testGetGrid");
-		IGrid grid = g.getGrid();
+		IGrid grid = l.getGrid();
 		assertTrue(grid.getRows()==rowsSize);
 		assertTrue(grid.getCols()==colsSize);
 	}
@@ -111,5 +111,4 @@ public class LifeTest {
 		assertTrue(count == 3);
 		l.getGrid().reset();
 	}
-		
 }
