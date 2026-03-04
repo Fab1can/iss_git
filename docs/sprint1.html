@@ -51,7 +51,7 @@
                     <div class="bg-body-tertiary border rounded p-3 mb-0">
                         <ul>
                             <li>Cosa intende il committente per "Cella"?</li>
-                            <li>interface ICell - Modella una singola cella della griglia, con stato vivo/morto.
+                            <li>interface ICell - Entità con stato vivo/morto.
                                 <ul>
                                     <li>void setStatus(boolean alive) - Imposta esplicitamente lo stato della cella.</li>
                                     <li>boolean isAlive() - Restituisce true se la cella è viva, false altrimenti.</li>
@@ -59,7 +59,7 @@
                                 </ul>
                             </li>
                             <li>Cosa intende il committente per "Griglia"?</li>
-                            <li>interface IGrid - Gestisce la matrice di celle e le operazioni di accesso.
+                            <li>interface IGrid - Gestisce un insieme ordinato di celle e le operazioni a loro correlate.
                                 <ul>
                                     <li>int getRows() - Restituisce il numero di righe della griglia.</li>
                                     <li>int getCols() - Restituisce il numero di colonne della griglia.</li>
