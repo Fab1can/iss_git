@@ -64,15 +64,20 @@
                                 <li>ICell getCell(int row, int col)</li>
                             </ul></li>
                             <li>class Life implements ILife<ul>
-                                void nextGeneration();
+                                <li>void nextGeneration()</li>
+                                <li>boolean isAlive(int row, int col)</li>
+                                <li>void setCell(int row, int col, boolean alive)</li>
+                                <li>int getRows()</li>
+                                <li>int getCols()</li>
+                            </ul></li>
+                        </ul>
+                    </div>
+                </section>
 
-    /** Restituisce lo stato di una cella specifica */
-    boolean isAlive(int row, int col);
+                <section class="mb-3">
+                    <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Problem analysis</h2>
+                </section>
 
-    /** Imposta lo stato di una cella */
-    void setCell(int row, int col, boolean alive);
-
-    /** Restituisce il numero di righe e colonne */
     int getRows();
     int getCols();
     
