@@ -2,9 +2,9 @@ package main.java.conway.domain;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
-public class Life implements LifeInterface{
+public class Life implements ILife{
 	
-	public static LifeInterface CreateLife(int nr, int nc) {
+	public static ILife CreateLife(int nr, int nc) {
 	   return new Life(nr,nc);   
    }
 	
@@ -19,7 +19,7 @@ public class Life implements LifeInterface{
     private IGrid currentGrid;
     private IGrid nextGrid;
     
-   public static LifeInterface CreateGameRules() {
+   public static ILife CreateGameRules() {
 	   return new Life(5, 5); 
 	   // Dimensioni di default, possono essere 
 	   //lette da un file di configurazione o passate come parametri

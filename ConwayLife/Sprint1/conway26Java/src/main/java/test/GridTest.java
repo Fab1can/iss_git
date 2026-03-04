@@ -19,7 +19,7 @@ public class GridTest {
 	@Before
 	public void setup() {
 		System.out.println("GriTest | setup");
-		g = new Grid(rowsSize,colsSize);
+		g = null;
 	}
 
 	@After
@@ -67,9 +67,5 @@ public class GridTest {
 	public void testGetCols() {
 		assertTrue(g.getCols()==colsSize);
 	}
-	
-	
-
-	
-	
+		
 }

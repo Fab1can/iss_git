@@ -9,13 +9,13 @@ import unibo.basicomm23.utils.CommUtils;
 
 public class LifeController implements GameController {
     private int generationTime = 500;
-    private  LifeInterface life;
+    private  ILife life;
     private  IOutDev outdev; 
  	protected boolean running = false;
     protected int epoch       = 0;
 
     
-    public LifeController( LifeInterface game, IOutDev outdev ){  
+    public LifeController( ILife game, IOutDev outdev ){  
         this.life   = game;       
         this.outdev = outdev;
        CommUtils.outyellow("LifeController CREATED outdev="+outdev   );

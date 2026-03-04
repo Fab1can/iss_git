@@ -20,7 +20,7 @@ public class CellTest {
 	@Before
 	public void setup() {
 		System.out.println("ConwayLifeTest | setup");
-		c = new Cell();
+		c = null;
 	}
 
 	@After
@@ -34,6 +34,7 @@ public class CellTest {
 		c.setStatus(true);
 		boolean r = c.isAlive();
 		assertTrue(r);
+		c.setStatus(false);
 	}
 	
 	@Test
@@ -45,5 +46,12 @@ public class CellTest {
 	}
 
 	
-	
+	@Test
+	public void testCellAlive() {
+		System.out.println("ConwayLifeTest | doing alive");
+		c.setStatus(true);
+		boolean r = c.isAlive();
+		assertTrue(r);
+		c.setStatus(false);
+	}	
 }

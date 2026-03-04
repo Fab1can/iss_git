@@ -46,6 +46,14 @@
                 </section>
 
                 <section class="mb-3">
+                    <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Problem analysis
+                    </h2>
+                    <div class="bg-body-tertiary border rounded p-3 mb-0">
+                        <img src="./img/LifeGameJava.jpg">
+                    </div>
+                </section>
+
+                <section class="mb-3">
                     <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Requirement analysis
                     </h2>
                     <div class="bg-body-tertiary border rounded p-3 mb-0">
@@ -65,7 +73,6 @@
                                     <li>int getCols() - Restituisce il numero di colonne della griglia.</li>
                                     <li>boolean isAlive(int row, int col) - Verifica se la cella in posizione (row, col) è viva.</li>
                                     <li>void setStatus(int row, int col, boolean status) - Aggiorna lo stato della cella in posizione (row, col).</li>
-                                    <li>int countNeighborsLive(int row, int col) - Conta le celle vive adiacenti alla cella in posizione (row, col).</li>
                                     <li>ICell getCell(int row, int col) - Restituisce il riferimento alla cella in posizione (row, col).</li>
                                     <li>void reset() - Modifica lo stato di tutte le celle della griglia portandole a morta.</li>
                                 </ul>
@@ -76,8 +83,11 @@
                                     <li>void nextGeneration() - Calcola e applica lo stato della generazione successiva.</li>
                                     <li>boolean isAlive(int row, int col) - Verifica lo stato della cella in posizione (row, col).</li>
                                     <li>void setCell(int row, int col, boolean alive) - Imposta lo stato di una cella identificata da (row, col).</li>
+                                    <li>ICell getCell(int row, int col) - Restituisce il riferimento alla cella in posizione (row, col).</li>
                                     <li>int getRows() - Restituisce il numero di righe della griglia gestita.</li>
                                     <li>int getCols() - Restituisce il numero di colonne della griglia gestita.</li>
+                                    <li>IGrid getGrid() - Restituisce il riferimento alla griglia gestita.</li>
+                                    <li>int countNeighborsLive(int row, int col) - Conta le celle vive adiacenti alla cella in posizione (row, col).</li>
                                 </ul>
                             </li>
                         </ul>
@@ -86,13 +96,212 @@
 
                 <section class="mb-3">
                     <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Test plans</h2>
-                    <ul>
-                        <li>Test di unità per la classe Grid<ul>
-                            <li>I parametri row e col su ognuno dei metodi devono essere numeri naturali minori della relativa dimensione della griglia.</li>
-                            <li>Se richiamo setCell(0,0,true) il metodo getCell(0,0) deve restituire true.</li>
-                            <li>Se richiamo reset() tutte le celle della griglia devono essere portate a morta.</li>
-                        </ul></li>
-                    </ul> 
+                    Test di unità per la classe Cell
+                    <pre>public class CellTest {
+	
+	private ICell c;
+
+	@Before
+	public void setup() {
+		System.out.println("ConwayLifeTest | setup");
+		c = new Cell();
+	}
+
+	@After
+	public void down() {
+		System.out.println("ConwayLifeTest | down");
+	}
+	
+	@Test
+	public void testCellAlive() {
+		System.out.println("ConwayLifeTest | doing alive");
+		c.setStatus(true);
+		boolean r = c.isAlive();
+		assertTrue(r);
+		c.setStatus(false);
+	}
+	
+	@Test
+	public void testCellDead() {
+		System.out.println("ConwayLifeTest | doing alive");
+		c.setStatus(false);
+		boolean r = c.isAlive();
+		assertFalse(r);
+	}
+
+	
+	@Test
+	public void testCellAlive() {
+		System.out.println("ConwayLifeTest | doing alive");
+		c.setStatus(true);
+		boolean r = c.isAlive();
+		assertTrue(r);
+		c.setStatus(false);
+	}	
+}</pre>
+                    Test di unità per la classe Grid
+                    <pre>public class GridTest {
+	
+	private IGrid g;
+	public static final int rowsSize = 5;
+	public static final int colsSize = 5;
+
+	@Before
+	public void setup() {
+		System.out.println("GriTest | setup");
+		g = new Grid(rowsSize,colsSize);
+	}
+
+	@After
+	public void down() {
+		System.out.println("GridTest | down");
+	}
+	
+	@Test
+	public void testSetGetCellCorretto() {
+		System.out.println("GridTest | testSetGetCellCorretto");
+		g.setStatus(0, 0, true);
+		assertTrue(g.isAlive(0, 0));
+	}
+	
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testGetCellErrato1() {
+		System.out.println("GridTest | testGetCellErrato1");
+	    g.isAlive(-1, -1);
+	}
+	
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testGetCellErrato2() {
+		System.out.println("GridTest | testGetCellErrato2");
+	    g.isAlive(rowsSize, colsSize);
+	}
+	
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testSetCellErrato1() {
+		System.out.println("GridTest | testSetCellErrato1");
+	    g.setStatus(-1, -1, true);
+	}
+	
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testSetCellErrato2() {
+		System.out.println("GridTest | testSetCellErrato2");
+	    g.setStatus(rowsSize, colsSize, true);
+	}
+	
+	@Test
+	public void testGetRows() {
+		assertTrue(g.getRows()==rowsSize);
+	}
+	
+	@Test
+	public void testGetCols() {
+		assertTrue(g.getCols()==colsSize);
+	}
+		
+}</pre>
+                    Test di unità per la classe Life
+                    <pre>public class LifeTest {
+	
+	private ILife l;
+	public static final int rowsSize = 5;
+	public static final int colsSize = 5;
+
+	@Before
+	public void setup() {
+		System.out.println("LifeTest | setup");
+		l = null;
+	}
+
+	@After
+	public void down() {
+		System.out.println("LifeTest | down");
+	}
+	
+	@Test
+	public void testNextGeneration() {
+		System.out.println("LifeTest | testNextGeneration");
+		l.setStatus(1, 1, true);
+		l.nextGeneration();
+		assertFalse(l.isAlive(1, 1));
+	}
+	
+	@Test
+	public void testIsAlive1() {
+		System.out.println("LifeTest | testIsAlive1");
+		assertFalse(l.isAlive(0, 0));
+	}
+	
+	@Test
+	public void testIsAlive2() {
+		System.out.println("LifeTest | testIsAlive2");
+		l.setStatus(0, 0, true);
+		assertTrue(l.isAlive(0, 0));
+		l.setStatus(0, 0, false);
+	}
+	
+	@Test
+	public void testSetGetCellCorretto() {
+		System.out.println("LifeTest | testSetGetCellCorretto");
+		l.setStatus(0, 0, true);
+		assertTrue(g.isAlive(0, 0));
+		l.setStatus(0, 0, false);
+	}
+	
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testGetCellErrato1() {
+		System.out.println("LifeTest | testGetCellErrato1");
+	    g.isAlive(-1, -1);
+	}
+	
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testGetCellErrato2() {
+		System.out.println("LifeTest | testGetCellErrato2");
+	    g.isAlive(rowsSize, colsSize);
+	}
+	
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testSetCellErrato1() {
+		System.out.println("LifeTest | testSetCellErrato1");
+	    g.setStatus(-1, -1, true);
+	}
+	
+	@Test(expected = IndexOutOfBoundsException.class)
+	public void testSetCellErrato2() {
+		System.out.println("LifeTest | testSetCellErrato2");
+	    g.setStatus(rowsSize, colsSize, true);
+	}
+	
+	@Test
+	public void testGetRows() {
+		System.out.println("LifeTest | testGetRows");
+		assertTrue(g.getRows()==rowsSize);
+	}
+	
+	@Test
+	public void testGetCols() {
+		System.out.println("LifeTest | testGetCols");
+		assertTrue(g.getCols()==colsSize);
+	}
+	
+	@Test
+	public void testGetGrid() {
+		System.out.println("LifeTest | testGetGrid");
+		IGrid grid = g.getGrid();
+		assertTrue(grid.getRows()==rowsSize);
+		assertTrue(grid.getCols()==colsSize);
+	}
+	
+	@Test
+	public void testCountNeighborsLive() {
+		System.out.println("LifeTest | testCountNeighborsLive");
+		l.setStatus(1, 1, true);
+		l.setStatus(1, 2, true);
+		l.setStatus(1, 3, true);
+		int count = l.countNeighborsLive(2, 2);
+		assertTrue(count == 3);
+		l.getGrid().reset();
+	}
+}</pre>
                 </section>
 
                 <section class="mb-3">

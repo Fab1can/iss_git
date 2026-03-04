@@ -1,11 +1,11 @@
 package main.java.conway.domain;
 
-public interface ICell {
+public interface ICell { //Entità con stato vivo/morto
 
-	void setStatus(boolean alive);
+	void setStatus(boolean alive); // Imposta esplicitamente lo stato della cella
 	
-	boolean isAlive();
+	boolean isAlive(); //Restituisce true se la cella è viva, false altrimenti
 	
-	void switchCellState();
+	void switchCellState(); //Inverte lo stato corrente della cella (viva ↔ morta)
 	
 }

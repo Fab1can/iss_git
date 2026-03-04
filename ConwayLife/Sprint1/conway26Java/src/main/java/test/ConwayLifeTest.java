@@ -7,18 +7,14 @@ import org.junit.Test;
 
 import main.java.conway.MainConwayLifeJava;
 import main.java.conway.devices.MockOutdev;
-import main.java.conway.domain.GameController;
-import main.java.conway.domain.IOutDev;
-import main.java.conway.domain.Life;
-import main.java.conway.domain.LifeController;
-import main.java.conway.domain.LifeInterface;
+import main.java.conway.domain.*;
 import unibo.basicomm23.utils.CommUtils;
 
 
 public class ConwayLifeTest {
 	private static final int nRows=5;
 	private static final int nCols=5;
-	private LifeInterface lifemodel; 
+	private ILife lifemodel; 
 
 	@Before
 	public void setup() {
@@ -34,7 +30,7 @@ public class ConwayLifeTest {
  
 	//@Test
 	public void testAppl() {
-		LifeInterface gameModel       = new Life(nRows, nCols);
+		ILife gameModel       = new Life(nRows, nCols);
 		IOutDev outputDevice          = new MockOutdev();
 		GameController lifeController = new LifeController(gameModel, outputDevice);
 		int genTime                   = lifeController.getGenTime();
