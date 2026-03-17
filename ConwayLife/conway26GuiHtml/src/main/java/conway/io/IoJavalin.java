@@ -114,9 +114,12 @@ public class IoJavalin {
 					gameController.onClear();
 				}
 				if(command.equals("exit")) {
-					ctx.send("lfctrl: closing");
+					gameController.onStop();
 					ctx.closeSession();
 				}
+            });
+            ws.onClose(ctx ->{
+            	gameController.onStop();
             });
         });        
 	}
