@@ -13,6 +13,8 @@ public class IoJavalin {
 	
 	private GameController gameController;
 	private IOController ioController = new IOController();
+	private String owner = "";
+	private boolean running = false;
 	
 	public IoJavalin() {		
         var app = Javalin.create(config -> {
@@ -85,37 +87,49 @@ public class IoJavalin {
         
         app.ws("/chat", ws -> {
             ws.onConnect(ctx -> {
-            	ILife life = new Life(20,20);
-            	ioController.setContext(ctx);
-            	gameController = new LifeController(life, ioController);
+            	if (gameController == null) {
+            		ILife life = new Life(20,20);
+                	ioController.addContext(ctx);
+                	gameController = new LifeController(life, ioController);
+				} else {
+					ioController.addContext(ctx);
+				}
+            	if(running) {
+            		ctx.send("running");
+				}
             	System.out.println("Client connected!");
-            	});
+        	});
             ws.onMessage(ctx -> {
                 String message = ctx.message();
             	System.out.println("chat: "+message);
             	String[] parts = message.split("::");
             	String sender = parts[0];
-            	String command = parts[1];
-            	System.out.println("sender: "+sender+" command: "+command);
-            	if(command.startsWith("cell")) {
-            		ioController.setContext(ctx);
-            		String[] _parts = command.substring(5, command.length() - 1).split(",");
-            		int x = Integer.parseInt(_parts[0]);
-            		int y = Integer.parseInt(_parts[1]);
-            		gameController.switchCellState(x, y);
-				}
-            	if(command.equals("start")) {
-					gameController.onStart();
-				}
-				if(command.equals("stop")) {
-					gameController.onStop();
-				}
-				if(command.equals("clear")) {
-					gameController.onClear();
-				}
-				if(command.equals("exit")) {
-					gameController.onStop();
-					ctx.closeSession();
+            	if (owner.isEmpty() || owner.equals(sender)) {
+					owner = sender;
+	            	String command = parts[1];
+	            	System.out.println("sender: "+sender+" command: "+command);
+	            	if(command.startsWith("cell")) {
+	            		String[] _parts = command.substring(5, command.length() - 1).split(",");
+	            		int x = Integer.parseInt(_parts[0]);
+	            		int y = Integer.parseInt(_parts[1]);
+	            		gameController.switchCellState(x, y);
+					}
+	            	if(command.equals("start")) {
+						gameController.onStart();
+						running = true;
+					}
+					if(command.equals("stop")) {
+						gameController.onStop();
+						running = false;
+					}
+					if(command.equals("clear")) {
+						gameController.onClear();
+					}
+					if(command.equals("exit")) {
+						gameController.onStop();
+						ctx.closeSession();
+						running = false;
+					}
 				}
             });
             ws.onClose(ctx ->{

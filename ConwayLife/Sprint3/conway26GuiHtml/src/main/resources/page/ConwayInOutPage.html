@@ -9,8 +9,8 @@
 <hr/>
 
 <!--  INPUT AREA   -->
-  <button onClick="sendCmdToServer('start'); return false">START</button>
-  <button onClick="sendCmdToServer('stop');  return false">STOP</button>
+  <button id="startBtn" onClick="startBtnClick()">START</button>
+  <button id="stopBtn" onClick="stopBtnClick()" disabled>STOP</button>
   <button onClick="sendCmdToServer('clear'); return false">CLEAR</button>
   <button onClick="sendCmdToServer('exit');  return false">EXIT</button>
 
@@ -41,6 +41,24 @@
 	<script src="iomap.js"></script>
 	<script src="outArea.js"></script>	   
     <script src="wscontrol.js"></script>  
+
+	<script>
+		var startBtn = document.getElementById("startBtn");
+		var stopBtn = document.getElementById("stopBtn");
+		
+		function startBtnClick() {
+	        startBtn.disabled = true;
+	        stopBtn.disabled = false;
+	        sendCmdToServer('start');
+			return false;
+	    }
+		function stopBtnClick() {
+	        startBtn.disabled = false;
+	        stopBtn.disabled = true;
+	        sendCmdToServer('stop');
+			return false
+	    }
+	</script>
 
 	
 </body>

@@ -1,10 +1,14 @@
 /*
 wscontrol.js
 */
- 	var pageId         = "unknown";
+ 	var pageId         = "";
 	var cmdMsgTemplate = "SENDER::CMD"
 	var opened         = false
 	var socketToGui;
+	
+	function generatePageId(){
+		pageId = ""+Math.floor(Math.random()*10000000);
+	}
 	
 	function sendCmdToServer(cmd) {
 		 console.log("sendCmdToServer:" + cmd )
@@ -15,6 +19,7 @@ wscontrol.js
 				
  function  initWS(){
  /*1*/	  
+ 	generatePageId();
 	  if( window.location.host =="" ) socketToGui = new WebSocket("ws://localhost:8080/chat");
 	  else 	socketToGui = new WebSocket("ws://"+window.location.host+"/chat");
 
@@ -38,6 +43,9 @@ wscontrol.js
 			 console.log("cell "+coords[0]+","+coords[1]+","+coords[2]);
 			 //addItem(coords);
 			 updateCellColor(coords[0],coords[1],coords[2] )  //In iomap.js
+		 }else if( event.data.startsWith("running")){
+			startBtn.disabled = true;
+			stopBtn.disabled = false;
 		 }else{/*
 	         if( event.data == "PING") {
 				socketToGui.send("PONG");
