@@ -7,10 +7,14 @@ import java.util.concurrent.CompletableFuture;
 import io.javalin.Javalin;
 import io.javalin.http.staticfiles.Location;
 import unibo.basicomm23.utils.CommUtils;
+import main.java.conway.domain.*;
 
 public class IoJavalin {
 	
-	public IoJavalin() {
+	private GameController gameController;
+	private IOController ioController = new IOController();
+	
+	public IoJavalin() {		
         var app = Javalin.create(config -> {
 			config.staticFiles.add(staticFiles -> {
 				staticFiles.directory = "/page";
@@ -80,10 +84,39 @@ public class IoJavalin {
         });
         
         app.ws("/chat", ws -> {
-            ws.onConnect(ctx -> System.out.println("Client connected!"));
+            ws.onConnect(ctx -> {
+            	ILife life = new Life(20,20);
+            	ioController.setContext(ctx);
+            	gameController = new LifeController(life, ioController);
+            	System.out.println("Client connected!");
+            	});
             ws.onMessage(ctx -> {
                 String message = ctx.message();
-                ctx.send("Echo: " + message);
+            	System.out.println("chat: "+message);
+            	String[] parts = message.split("::");
+            	String sender = parts[0];
+            	String command = parts[1];
+            	System.out.println("sender: "+sender+" command: "+command);
+            	if(command.startsWith("cell")) {
+            		ioController.setContext(ctx);
+            		String[] _parts = command.substring(5, command.length() - 1).split(",");
+            		int x = Integer.parseInt(_parts[0]);
+            		int y = Integer.parseInt(_parts[1]);
+            		gameController.switchCellState(x, y);
+				}
+            	if(command.equals("start")) {
+					gameController.onStart();
+				}
+				if(command.equals("stop")) {
+					gameController.onStop();
+				}
+				if(command.equals("clear")) {
+					gameController.onClear();
+				}
+				if(command.equals("exit")) {
+					ctx.send("lfctrl: closing");
+					ctx.closeSession();
+				}
             });
         });        
 	}
