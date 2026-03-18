@@ -12,7 +12,7 @@
 <body class="bg-light">
     <div class="container py-4">
         <header class="mb-4">
-            <h1 class="display-6 bg-primary-subtle border rounded p-3 mb-0">ConwayLife Sprint3</h1>
+            <h1 class="display-6 bg-primary-subtle border rounded p-3 mb-0">ConwayLife Sprint3.5</h1>
         </header>
 
         <main class="card shadow-sm">
@@ -42,25 +42,10 @@
                 </section>
 
                 <section class="mb-3">
-                    <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Requirement analysis
-                    </h2>
-                    <div class="bg-body-tertiary border rounded p-3 mb-0">
-                        Riportiamo la architettura logica del sistema realizzato usando Java.
-                        <img src="./img/LifeGameJava.jpg"><br/>
-                        La introduzione di una pagina HTML cambia la natura del sistema, che diventa un sistema distribuito, in quanto alla nostra applicazione si affianca un browser.
-                        <ul>
-                        </ul>
-                    </div>
-                </section>
-
-                <section class="mb-3">
                     <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Problem analysis</h2>
-                    <img src="./img/javalin.jpg"><br>
-                    È necessario che esista un'implementazione della interfaccia IOutDev che sia in grado di comunicare con il server Javalin, che a sua volta deve essere in grado di comunicare con il browser.
-                    La comunicazione avviene via WebSocket, con un canale aperto alla connessione del browser al server, e con messaggi in un formato SENDER::COMMAND.
-                    Il formato è stato descritto con questa grammatica per semplificare nel parsing lato server e la divisione tra il SENDER (in modo da discriminare chi è il giocatore owner) e il comando inviato dal browser.
-                    Il sender è identificato da un pageId generato lato client.
-                    <pre>function generatePageId(){pageId = ""+Math.floor(Math.random()*10000000);}</pre>
+                    <img src="./img/javalin2.jpg"><br>
+                        A differenza dell'architettura implementata nello <a href="https://fab1can.github.io/iss_git/sprint3.html">Sprint3</a> in questo Sprint si adotterà un architettura dove il server Javalin e l'applicazione che controlla il gioco di Conway saranno due servizi separati che interagiranno fra di loro. Cambia anche il formato dei messaggi, che sarà quello definito dalla libreria basicomm23. In questa versione è il servizio Javalin a decidere l'id del client.
+                        
                 </section>
 
                 <section class="mb-3">
@@ -69,7 +54,7 @@
 
                 <section class="mb-3">
                     <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Project</h2>
-                    L'implementazione di IOutDev che comunica con il server Javalin è stata chiamata IOController, e il suo codice è raggiungibile a questo <a href="https://github.com/Fab1can/iss_git/blob/main/ConwayLife/Sprint3/conway26GuiHtml/src/main/java/conway/io/IOController.java">link</a>.
+                    IOutDev è stato implementato con la classe <a href="https://github.com/Fab1can/iss_git/blob/main/ConwayLife/Sprint3.5/conway26JavaSwingDocker/src/main/java/conway26appl/OutInGuiInteraction.java">OutInGuiInteraction</a>
                 </section>
 
                 <section class="mb-3">
@@ -78,6 +63,9 @@
 
                 <section class="mb-3">
                     <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Deployment</h2>
+                    Il server Javalin è stato containerizzato con Docker. La sua immagine viene costruita con il comando "./gradlew distTar && docker build -t gui26html:1.0 .", e viene eseguita con il comando "docker compose -f conway26GuiHtml.yaml up".<br>
+                    Il server di gioco al momento non è containerizzato, ma è eseguibile con il comando "./gradlew runLifeGameInteraction".
+                    È necessario eseguire prima il server Javalin, e poi il server di gioco, in quanto il primo è necessario per la comunicazione con il browser, successivamente il gioco sarà accessibile all'indirizzo "http://localhost:8080/".
                 </section>
 
                 <section class="mb-0">
