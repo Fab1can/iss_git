@@ -42,8 +42,6 @@ public class SistemaSJavalin implements IEvaluator {
     		    ctx.status(204); // No Content - conferma che il server accetta la chiamata
     		});
 		}
-		
- 
 	}
 	
  /* 

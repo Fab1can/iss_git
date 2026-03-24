@@ -1,0 +1,16 @@
+services:
+
+  protoactor26:
+    container_name: protoactor26
+    #image: docker.io/natbodocker/robotoutgui25:1.0
+    image: protoactor26-1.0
+    ports:
+      - 8080:8080/tcp 
+##    networks:
+##      - iss-network
+
+##networks:
+##  iss-network:
+##    external: true
+
+## docker-compose -f protoactor26.yaml  up
