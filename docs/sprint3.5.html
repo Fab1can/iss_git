@@ -30,13 +30,13 @@
                 <section class="mb-4">
                     <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Requirements</h2>
                     <div class="bg-body-tertiary border rounded p-3 mb-0">
-                        <ul><li>Dotare il gioco Life. di una pagina HTML come dispositivo di I/O</li>
-                            <li>La pagina deve costituire un componente esterno alla applicazione secondo la architettura riportata in IoJavalin esterno alla applicazione.</li>
-                            <li>Il gestore del gioco sarà l'utente che ha aperto per primo (owner) una pagina HTML collegata al gioco. In altre parole, solo la pagina dell'owner avrà pulsanti di comando START/STOP/CLEAN/EXIT attivi.</li>
-                            <li>La pagina HTML deve essere aggiornata in modo automatico man mano il gioco procede</li>
-                            <li>Un utente non owner che si collega mentre il gioco è in corso, dovrebbe vedere lo stato attuale della griglia in modo corretto</li>
-                            <li>La pagina HTML deve indicare se il gioco continua anche nel caso di griglia vuota o di configurazione stabile</li>
-                            <li>Il deployment del gioco deve avvenire mediante Docker</li>
+                        <ul><li>R1: Dotare il gioco Life. di una pagina HTML come dispositivo di I/O</li>
+                            <li>R2: La pagina deve costituire un componente esterno alla applicazione secondo la architettura riportata in <a href="https://anatali.github.io/issLab2026/_static/docs/Protobook.pdf#subsection.8.2.2">IoJavalin</a> esterno alla applicazione.</li>
+                            <li>R3: Il gestore del gioco sarà l'utente che ha aperto per primo (owner) una pagina HTML collegata al gioco. In altre parole, solo la pagina dell'owner avrà pulsanti di comando START/STOP/CLEAN/EXIT attivi.</li>
+                            <li>R4: La pagina HTML deve essere aggiornata in modo automatico man mano il gioco procede</li>
+                            <li>R5: Un utente non owner che si collega mentre il gioco è in corso, dovrebbe vedere lo stato attuale della griglia in modo corretto</li>
+                            <li>R6: La pagina HTML deve indicare se il gioco continua anche nel caso di griglia vuota o di configurazione stabile</li>
+                            <li>R7: Il deployment del gioco deve avvenire mediante Docker</li>
                         </ul>
                     </div>
                 </section>
@@ -44,8 +44,7 @@
                 <section class="mb-3">
                     <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Problem analysis</h2>
                     <img src="./img/javalin2.jpg"><br>
-                        A differenza dell'architettura implementata nello <a href="https://fab1can.github.io/iss_git/sprint3.html">Sprint3</a> in questo Sprint si adotterà un architettura dove il server Javalin e l'applicazione che controlla il gioco di Conway saranno due servizi separati che interagiranno fra di loro. Cambia anche il formato dei messaggi, che sarà quello definito dalla libreria basicomm23. In questa versione è il servizio Javalin a decidere l'id del client.
-                        
+                        A differenza dell'architettura implementata nello <a href="https://fab1can.github.io/iss_git/sprint3.html">Sprint3</a> in questo Sprint si adotterà un architettura dove il server Javalin e l'applicazione che controlla il gioco di Conway saranno due servizi separati che interagiranno fra di loro. Cambia anche il formato dei messaggi, che sarà quello definito dalla libreria basicomm23. In questa versione è il servizio Javalin a decidere l'id del client (e rispettare R5).
                 </section>
 
                 <section class="mb-3">
@@ -63,7 +62,7 @@
 
                 <section class="mb-3">
                     <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Deployment</h2>
-                    Il server Javalin è stato containerizzato con Docker. La sua immagine viene costruita con il comando "./gradlew distTar && docker build -t gui26html:1.0 .", e viene eseguita con il comando "docker compose -f conway26GuiHtml.yaml up".<br>
+                    Il server Javalin è stato containerizzato con Docker per rispettare R7. La sua immagine viene costruita con il comando "./gradlew distTar && docker build -t gui26html:1.0 .", e viene eseguita con il comando "docker compose -f conway26GuiHtml.yaml up".<br>
                     Il server di gioco al momento non è containerizzato, ma è eseguibile con il comando "./gradlew runLifeGameInteraction".
                     È necessario eseguire prima il server Javalin, e poi il server di gioco, in quanto il primo è necessario per la comunicazione con il browser, successivamente il gioco sarà accessibile all'indirizzo "http://localhost:8080/".
                 </section>

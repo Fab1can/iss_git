@@ -27,10 +27,10 @@
                 <section class="mb-4">
                     <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Requirements</h2>
                     <div class="bg-body-tertiary border rounded p-3 mb-0">
-                        <ul><li>Realizzare un sistema che preso in input x possa valutare sin(x)+cos(sqrt(3)*x) e restituisca il risultato all'utente</li>
-                            <li>Il sistema deve essere realizzato con Java e Javalin</li>
-                            <li>Il sistema deve essere implementato usando il framework Javalin</li>
-                            <li>Il deployment del sistema deve avvenire mediante Docker</li>
+                        <ul><li>R1: Realizzare un sistema che preso in input x possa valutare sin(x)+cos(sqrt(3)*x) e restituisca il risultato all'utente</li>
+                            <li>R2: Il sistema deve essere realizzato con Java</li>
+                            <li>R3: Il sistema deve essere implementato usando il framework Javalin</li>
+                            <li>R4: Il deployment del sistema deve avvenire mediante Docker</li>
                         </ul>
                     </div>
                 </section>
@@ -40,9 +40,9 @@
                     </h2>
                     <div class="bg-body-tertiary border rounded p-3 mb-0">
                         <ul>
-                            <li>È necessaria una semplice funzione eval che prenda in input un numero reale e restituisca il risultato della valutazione di sin(x)+cos(sqrt(3)*x). Non sarebbe fondamentale realizzare un interfaccia apposita ma per il principio di SoC creeremo l'interfaccia <a href="https://github.com/Fab1can/iss_git/blob/main/AService/Sprint1/SistemaSJavalin/src/main/java/domain/IEvaluator.java">IEvaluator</a>.</li>
-                            <li>È necessario un server Javalin che esponga una API per ricevere in input un numero reale e restituire il risultato della valutazione di sin(x)+cos(sqrt(3)*x).</li>
-                            <li>Il server Javalin deve essere esposto su una porta accessibile dall'esterno di un container Docker.</li>
+                            <li>Per rispettare R1 sarebbe necessaria una semplice funzione eval che prenda in input un numero reale e restituisca il risultato della valutazione di sin(x)+cos(sqrt(3)*x). Non sarebbe fondamentale realizzare un interfaccia apposita ma per il principio di SoC creeremo l'interfaccia <a href="https://github.com/Fab1can/iss_git/blob/main/AService/Sprint1/SistemaSJavalin/src/main/java/domain/IEvaluator.java">IEvaluator</a>.</li>
+                            <li>Per rispettare R2 ed R3 è necessario un server Javalin che esponga una API per ricevere in input un numero reale e restituire il risultato della valutazione di sin(x)+cos(sqrt(3)*x).</li>
+                            <li>Per rispettare R4 il server Javalin deve essere esposto su una porta accessibile dall'esterno di un container Docker.</li>
                         </ul>
                     </div>
                 </section>
@@ -67,7 +67,7 @@
 
                 <section class="mb-3">
                     <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Deployment</h2>
-                    Il server Javalin è stato containerizzato con Docker. La sua immagine viene costruita con il comando "./gradlew distTar && docker build -t sistemasjavalin-1.0 .", e viene eseguita con il comando "docker compose -f sistemasjavalin.yaml up".<br>
+                    Il server Javalin è stato containerizzato con Docker secondo R4. La sua immagine viene costruita con il comando "./gradlew distTar && docker build -t sistemasjavalin-1.0 .", e viene eseguita con il comando "docker compose -f sistemasjavalin.yaml up".<br>
                     Dopo aver eseguito il container, il servizio sarà accessibile all'indirizzo "http://localhost:8080/eval/valore", dove valore è un numero reale passato come parametro di query.
                 </section>
 
