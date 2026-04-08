@@ -7,12 +7,13 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 
+import domain.IEvaluator;
 import protoactor26.AbstractProtoactor26;
 import protoactor26.ProtoActorContext26;
 import unibo.basicomm23.interfaces.IApplMessage;
 import unibo.basicomm23.utils.CommUtils;
 
-public class SistemaSAsProtoactor extends AbstractProtoactor26{
+public class SistemaSAsProtoactor extends AbstractProtoactor26 implements IEvaluator{
     protected ScheduledExecutorService proactiveJobExecutor;
 
 	public SistemaSAsProtoactor(String name, ProtoActorContext26 context) {
@@ -31,13 +32,14 @@ public class SistemaSAsProtoactor extends AbstractProtoactor26{
 //	}
 
 	 
-    protected double eval(double x) {
+	@Override
+    public float eval(float x) {
     	CommUtils.outblue(name + " | eval: " + x);
         if (x > 4.0) {
             CommUtils.outmagenta(name + " | Simulo ritardo per x=" + x);
             CommUtils.delay(3000);
           }
-    	return Math.sin(x) + Math.cos( Math.sqrt(3)*x);
+    	return (float)(Math.sin(x) + Math.cos( Math.sqrt(3)*x));
     }
     
 	@Override
@@ -51,8 +53,8 @@ public class SistemaSAsProtoactor extends AbstractProtoactor26{
     	//emitInfo( name + " elab request from:" + req.msgSender());
     	//emitInfo(name + " elab request from:" + req.msgSender() + " NumConn=" + allConns.size());
         if( req.msgId().equals("eval")){
-            double x      = Double.parseDouble(req.msgContent());
-            double result = eval(x);
+            float x      = Float.parseFloat(req.msgContent());
+            float result = eval(x);
             String resMsg = "f(V,R)".replace("V",req.msgContent()).replace("R",""+result);   //term PrologS
             IApplMessage replyMsg = 
             CommUtils.buildReply(name,req.msgId(),resMsg,req.msgSender()); 
