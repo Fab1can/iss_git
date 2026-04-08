@@ -21,4 +21,5 @@
  * [Index dello sprint3.5](https://fab1can.github.io/iss_git/sprint3.5.html)
  ### Sistema Javalin
  * [Index del sistema SJavalin](https://fab1can.github.io/iss_git/SistemaSJavalin.html)
- * Il sistema protoactor26 non ha un file di progetto per la sua grande similarità con il sistema SJavalin. Il suo codice è disponibile nella cartella [protoactor26](protoactor26).
+### Sistema Protoactor
+ * [Index del sistema Protoactor](https://fab1can.github.io/iss_git/SistemaSProtoactor.html)
