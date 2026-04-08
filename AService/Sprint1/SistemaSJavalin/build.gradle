@@ -40,17 +40,10 @@ dependencies {
  }
 
 sourceSets {
-    main.java.srcDirs += 'src'
-    main.java.srcDirs += 'src/main/java'
-    main.java.srcDirs += 'src/main/kotlin'
-    main.java.srcDirs += 'src/main/resources'
-    test.java.srcDirs += 'src/main/java/test'         //test is specific
-    test.java.srcDirs += 'src/main/kotlin/test'
-}
-
-eclipse {
-    classpath {
-        sourceSets -= [sourceSets.main, sourceSets.test]
+    main {
+        java {
+            srcDirs = ['src'] 
+        }
     }
 }
 

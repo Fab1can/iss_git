@@ -29,12 +29,16 @@ dependencies {
 }
 
 sourceSets {
-    main.java.srcDirs += 'src'
-    main.java.srcDirs += 'src/main/java'
-    main.java.srcDirs += 'src/main/kotlin'
-    main.java.srcDirs += 'src/main/resources'
-    test.java.srcDirs += 'src/main/java/test'         //test is specific
-    test.java.srcDirs += 'src/main/kotlin/test'
+    main {
+        java {
+            srcDirs = ['src'] 
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src'] 
+        }
+    }
 }
 
 // Configure JaCoCo tool version and test task reporting
@@ -52,12 +56,6 @@ test {
     }
     // Make sure the jacoco report runs after tests
     finalizedBy jacocoTestReport
-}
-
-eclipse {
-    classpath {
-        sourceSets -= [sourceSets.main, sourceSets.test]
-    }
 }
 
 application {
