@@ -64,7 +64,7 @@ main {
 
 application {
     //Define the main class for the application.
-    mainClassName    = 'conway26LifeganeTcp.MainLifeGame'
+    mainClassName    = 'conway26appl.conway26LifegameTcp.MainLifeGame'
 }
 
 jar {
