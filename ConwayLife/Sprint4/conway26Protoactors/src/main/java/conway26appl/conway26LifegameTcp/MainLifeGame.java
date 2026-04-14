@@ -1,4 +1,4 @@
-package conway26LifeganeTcp;
+package conway26appl.conway26LifegameTcp;
 
 
 import protoactor26.ProtoActorContext26Tcp;

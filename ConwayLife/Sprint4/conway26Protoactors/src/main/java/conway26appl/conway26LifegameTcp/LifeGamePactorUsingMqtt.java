@@ -1,4 +1,4 @@
-package conway26LifeganeTcp;
+package conway26appl.conway26LifegameTcp;
 
 import main.java.conway.domain.LifeInterface;
 import protoactor26.AbstractProtoactor26;
