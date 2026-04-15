@@ -14,7 +14,7 @@ public class GuiServer extends AbstractProtoactor26 {
 	private IoJavalin jvlnserver;
  	protected ScheduledExecutorService readexecutor = Executors.newSingleThreadScheduledExecutor();
 	protected CountDownLatch latchInput      = new CountDownLatch(1);
- 	protected String MqttBroker;              //= "tcp://localhost:1883"; //"tcp://broker.hivemq.com"; 
+ 	protected String MqttBroker;             // = "tcp://localhost:1883"; //"tcp://broker.hivemq.com"; 
  	protected MqttSupport  mqttsupport       = new MqttSupport( ); 
  	
  	/*
@@ -29,10 +29,10 @@ public class GuiServer extends AbstractProtoactor26 {
 		super(name, ctx);
 		jvlnserver = new IoJavalin("javaliniserver", this);
 		
-		if (!MainGuiServer.workingForPolling) {
+		if( ! MainGuiServer.workingForPolling ) {
 			MqttBroker = "tcp://localhost:1883";
 			mqttsupport.connectToBroker(name,MqttBroker);
-			mqttsupport.cleartopic("lifeGameIn");
+			mqttsupport.cleartopic("lifeGameIn");		
 		}
 	}
 
@@ -88,17 +88,31 @@ public class GuiServer extends AbstractProtoactor26 {
 		lastCmdIn = m.msgContent();
 	}
 	/*
-	 * Called by jvlnserver. Perceived by LifeGamePactorCmdEvent
+	 * Called by jvlnserver.
+	 * m = 
+	 * Pubòlish an event to be perceived by LifeGamePactorCmdEvent
 	 */
 	public void answerToReadEvent(IApplMessage m) {
-		CommUtils.outmagenta(name + " | answerToReadEvent from jvlnserver publish: " + m );
-		mqttsupport.publish(  "lifegameIn",m.toString(),1,false );  //last arg: retained
+		CommUtils.outmagenta(name + " | answerToReadEvent  " + m );
+		//ADEGUO EVENTO AL LINGUAGGIO DELLA APPL
+		String msgId   = "";
+		String payload = m.msgContent() ;
+		if( payload.equals("start") || payload.equals("stop") 
+				|| payload.equals("clear") || payload.equals("exit")  ) {
+			msgId   = payload;
+			payload = payload+"(gui)";
+		}else { //cell
+			msgId   = "cellstate";
+		}
+		IApplMessage ev = CommUtils.buildEvent(name, msgId, payload);
+		CommUtils.outmagenta(name + " | answerToReadEvent from jvlnserver publish on lifegameIn: " + ev );
+		mqttsupport.publish(  "lifegameIn",ev.toString(),1,false );  //last arg: retained
 	}
 	
 
 
 	protected void hanleMsgFromAppl(IApplMessage m) {
-		CommUtils.outyellow(name + " | hanleMsgFromAppl " + m.msgId() );
+//		CommUtils.outyellow(name + " | hanleMsgFromAppl " + m  );
 		if (m.msgReceiver().equals(name) && m.msgContent().startsWith("[[")) { // canvas rep
 //			CommUtils.outcyan(name + " | receives [[" + " from " + m.msgSender() + " to "
 //			+ m.msgReceiver());
@@ -113,10 +127,7 @@ public class GuiServer extends AbstractProtoactor26 {
 			}
 			return;
 		}
-//    	if( m.msgReceiver().equals(name) && m.msgId().contains("endremoteclient")) { 
-//    		CommUtils.outmagenta(name + " | receives endremoteclient. Removing a ctx");
-//    		allConns.remove(ctx);
-//    	}
+
 	}
 
 }

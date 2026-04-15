@@ -61,6 +61,11 @@ main {
     }
   }
 
+eclipse {
+    classpath {
+        sourceSets -= [sourceSets.main, sourceSets.test]
+    }
+}
 
 application {
     //Define the main class for the application.
