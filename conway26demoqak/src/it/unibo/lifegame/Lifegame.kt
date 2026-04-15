@@ -33,12 +33,38 @@ class Lifegame ( name: String, scope: CoroutineScope, isconfined: Boolean=false,
 				state("s0") { //this:State
 					action { //it:State
 						CommUtils.outblue("$name | starting")
-						 System.exit(0)  
+						CommUtils.outblue("$name | ends")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
+					 transition( edgeName="goto",targetState="work", cond=doswitch() )
+				}	 
+				state("work") { //this:State
+					action { //it:State
+						CommUtils.outmagenta("$name | waiting for event...")
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t00",targetState="handleEvent",cond=whenEvent("start"))
+					transition(edgeName="t01",targetState="handleEvent",cond=whenEvent("stop"))
+					transition(edgeName="t02",targetState="handleEvent",cond=whenEvent("clear"))
+				}	 
+				state("handleEvent") { //this:State
+					action { //it:State
+						CommUtils.outmagenta("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
+						 	   
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t03",targetState="handleEvent",cond=whenEvent("start"))
+					transition(edgeName="t04",targetState="handleEvent",cond=whenEvent("stop"))
+					transition(edgeName="t05",targetState="handleEvent",cond=whenEvent("clear"))
 				}	 
 			}
 		}
