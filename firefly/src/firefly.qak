@@ -1,0 +1,75 @@
+System firefly
+
+Dispatch cellstate : cellstate(X,Y,COLOR)
+
+Context ctxfirefly	ip [ host="localhost"	port=8040 ]
+Context ctxgrid		ip [ host="127.0.0.1"	port=8050 ]
+
+ExternalQActor griddisplay context ctxgrid
+
+QActor creator context ctxfirefly{
+	State s0 initial {
+		[#
+    	for( i in 0..19 ){
+    		for( j in 0..19 ){
+    			CommUtils.outcyan("$name | CREATES firefly_${i}_${j}")  
+    			createActorDynamically( "firefly", "_${i}_${j}", false)
+    		}
+    	}		 
+    	#]
+	}
+}
+
+QActor firefly context ctxfirefly dynamicOnly {
+	[#
+	var X = 0
+	var Y = 0
+	
+	fun setCellCoords( )  {
+ 		val coords = name.replace("firefly_","").split("_")   
+ 		X  = coords[0].toInt()
+ 		Y  = coords[1].toInt()      
+	}	
+	#]
+	
+	State s0 initial {
+		[# setCellCoords( )                                   #]
+		[# val Timer = java.util.Random().nextLong(1000L,2000L )  #]  
+		println("$name | X=$X Y=$Y  Timer=$Timer") color magenta
+	}
+	
+	Goto flash
+	
+	State flash {
+		[#
+			var Timer = java.util.Random().nextLong(500L, 1000L)	
+		#]
+		forward griddisplay -m cellstate: cellstate($X,$Y,1) //accende
+		delayVar Timer
+		forward griddisplay -m cellstate: cellstate($X,$Y,0) //spegne
+	}
+	
+	Transition t0 whenTime 500 -> flash
+}
+
+//questo è un modello che scaturisce l'analisi del problema
+
+//QActor griddisplaymock context ctxfirefly {
+//	State s0 initial {
+//		printCurrentMessage color yellow
+//	}
+//	
+//	Transition t1 whenMsg cellstate -> display
+//	
+//	State display {
+//		onMsg(cellstate : cellstate(X,Y,COLOR)){
+//			[#val X = payloadArg(0)#]
+//			[#val Y = payloadArg(1)#]
+//			[#val COLOR = payloadArg(2)#]
+//			
+//			println("$name | update cell $X,$Y with color $COLOR") color red
+//		}
+//	}
+//	
+//	Transition t2 whenMsg cellstate -> display
+//}
