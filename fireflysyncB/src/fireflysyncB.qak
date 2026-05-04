@@ -1,0 +1,109 @@
+System fireflysync
+
+Event syncronize : syncronize(FREQ)
+Event desyncronize : desyncronize(X)
+Dispatch cellstate : cellstate(X,Y,COLOR)
+Dispatch distance: distance(D)
+
+Context ctxfireflies ip [host="localhost" port=8040 ]
+Context ctxgrid ip [host="127.0.0.1" port=8050]
+
+ExternalQActor griddisplay context ctxgrid
+
+QActor sonar context ctxfireflies {
+	[# var Distance = java.util.Random().nextInt(0,100) #]
+	State s0 initial {
+		forward creator -m distance:distance($Distance)
+		[# 
+			val delta = java.util.Random().nextInt(-10,10)
+			Distance = Math.abs(Distance+delta)
+		#]
+	}
+	Transition t0 whenTime 100 -> s0
+}
+
+QActor creator context ctxfireflies {
+	[# 
+		var distanceGreater = true 
+		val DIST_MIN = 300
+	#]
+	
+	State s0 initial {
+		[#
+			for( i in 0..2 ){ 
+    			createActorDynamically( "firefly", "${i}", false)
+    		}
+			val Millis = System.currentTimeMillis()
+			val Timer = java.util.Random().nextLong(1000L,2000L)
+		#]
+	}
+	
+	Transition t0 whenMsg distance -> receiver
+	
+	State receiver {
+		onMsg(distance:distance(D)){
+			[#
+				val distance = payloadArg(0).toInt()
+				if (distanceGreater && distance < DIST_MIN){
+					distanceGreater = false		
+					val Timer = java.util.Random().nextLong(1000L,2000L)
+			#]
+					emit syncronize: syncronize($Timer)
+					println("emesso sync") color red
+			[#
+				} else if (!distanceGreater && distance >= DIST_MIN) {
+					distanceGreater = true
+			#]
+					emit desyncronize: desyncronize(0)
+					println("emesso desync") color red
+			[#
+				}
+			#]
+		}
+	}
+}
+
+QActor firefly context ctxfireflies dynamicOnly{
+	[#  
+		val X = name.split("firefly")[1].toInt()
+		val Y = 0
+		var Timer = java.util.Random().nextLong(1000L,2000L)  
+	#]
+	State s0 initial {
+	}
+	
+	Goto flash
+	
+	State flash {
+		println("$name | $Timer") color magenta
+		forward griddisplay -m cellstate: cellstate($X,$Y,1) //accende
+		delayVar Timer
+		forward griddisplay -m cellstate: cellstate($X,$Y,0) //spegne
+	}
+	
+	Transition t0
+		whenTimeVar Timer -> flash
+		whenEvent syncronize -> sync
+		whenEvent desyncronize -> desync
+	
+	State sync {
+		printCurrentMessage color magenta
+		onMsg(syncronize: syncronize(FREQ)){
+			[# Timer = payloadArg(0).toLong() #]
+		}
+		
+	}
+	
+	Goto flash
+	
+	State desync {
+		printCurrentMessage color magenta
+		onMsg(desyncronize: desyncronize(X)){
+			[# Timer = java.util.Random().nextLong(1000L,2000L) #]
+		}
+	}
+	
+	Goto flash
+	
+}
+
