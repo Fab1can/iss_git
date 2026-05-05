@@ -39,7 +39,6 @@ class Creator ( name: String, scope: CoroutineScope, isconfined: Boolean=false, 
 									for( i in 0..2 ){ 
 						    			createActorDynamically( "firefly", "${i}", false)
 						    		}
-									val Millis = System.currentTimeMillis()
 									val Timer = java.util.Random().nextLong(1000L,2000L)
 						//genTimer( actor, state )
 					}
@@ -55,9 +54,10 @@ class Creator ( name: String, scope: CoroutineScope, isconfined: Boolean=false, 
 								
 												val distance = payloadArg(0).toInt()
 												if (distanceGreater && distance < DIST_MIN){
-													distanceGreater = false		
+													distanceGreater = false	
+													val Millis = System.currentTimeMillis()	
 													val Timer = java.util.Random().nextLong(1000L,2000L)
-								emit("syncronize", "syncronize($Timer)" ) 
+								emit("syncronize", "syncronize($Millis,$Timer)" ) 
 								CommUtils.outred("emesso sync")
 								
 												} else if (!distanceGreater && distance >= DIST_MIN) {
@@ -72,6 +72,7 @@ class Creator ( name: String, scope: CoroutineScope, isconfined: Boolean=false, 
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
+					 transition(edgeName="t02",targetState="receiver",cond=whenDispatch("distance"))
 				}	 
 			}
 		}

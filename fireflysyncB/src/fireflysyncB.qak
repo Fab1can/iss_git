@@ -1,6 +1,6 @@
 System fireflysync
 
-Event syncronize : syncronize(FREQ)
+Event syncronize : syncronize(TIME, FREQ)
 Event desyncronize : desyncronize(X)
 Dispatch cellstate : cellstate(X,Y,COLOR)
 Dispatch distance: distance(D)
@@ -11,7 +11,7 @@ Context ctxgrid ip [host="127.0.0.1" port=8050]
 ExternalQActor griddisplay context ctxgrid
 
 QActor sonar context ctxfireflies {
-	[# var Distance = java.util.Random().nextInt(0,100) #]
+	[# var Distance = java.util.Random().nextInt(350,400) #]
 	State s0 initial {
 		forward creator -m distance:distance($Distance)
 		[# 
@@ -33,7 +33,6 @@ QActor creator context ctxfireflies {
 			for( i in 0..2 ){ 
     			createActorDynamically( "firefly", "${i}", false)
     		}
-			val Millis = System.currentTimeMillis()
 			val Timer = java.util.Random().nextLong(1000L,2000L)
 		#]
 	}
@@ -45,10 +44,11 @@ QActor creator context ctxfireflies {
 			[#
 				val distance = payloadArg(0).toInt()
 				if (distanceGreater && distance < DIST_MIN){
-					distanceGreater = false		
+					distanceGreater = false	
+					val Millis = System.currentTimeMillis()	
 					val Timer = java.util.Random().nextLong(1000L,2000L)
 			#]
-					emit syncronize: syncronize($Timer)
+					emit syncronize: syncronize($Millis, $Timer)
 					println("emesso sync") color red
 			[#
 				} else if (!distanceGreater && distance >= DIST_MIN) {
@@ -61,6 +61,8 @@ QActor creator context ctxfireflies {
 			#]
 		}
 	}
+	
+	Transition t0 whenMsg distance -> receiver
 }
 
 QActor firefly context ctxfireflies dynamicOnly{
@@ -88,8 +90,14 @@ QActor firefly context ctxfireflies dynamicOnly{
 	
 	State sync {
 		printCurrentMessage color magenta
-		onMsg(syncronize: syncronize(FREQ)){
-			[# Timer = payloadArg(0).toLong() #]
+		onMsg(syncronize: syncronize(TIME, FREQ)){
+			[#
+				val time = payloadArg(0).toLong()
+				val now = System.currentTimeMillis()
+				val Wait = 1000 - (now-time)
+			#]
+			delayVar Wait
+			[# Timer = payloadArg(1).toLong() #]
 		}
 		
 	}

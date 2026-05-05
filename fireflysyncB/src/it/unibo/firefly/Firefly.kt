@@ -56,17 +56,22 @@ class Firefly ( name: String, scope: CoroutineScope, isconfined: Boolean=false, 
 				 	 		stateTimer = TimerActor("timer_flash", 
 				 	 					  scope, context!!, "local_tout_"+name+"_flash", Timer )  //OCT2023
 					}	 	 
-					 transition(edgeName="t02",targetState="flash",cond=whenTimeout("local_tout_"+name+"_flash"))   
-					transition(edgeName="t03",targetState="sync",cond=whenEvent("syncronize"))
-					transition(edgeName="t04",targetState="desync",cond=whenEvent("desyncronize"))
+					 transition(edgeName="t03",targetState="flash",cond=whenTimeout("local_tout_"+name+"_flash"))   
+					transition(edgeName="t04",targetState="sync",cond=whenEvent("syncronize"))
+					transition(edgeName="t05",targetState="desync",cond=whenEvent("desyncronize"))
 				}	 
 				state("sync") { //this:State
 					action { //it:State
 						CommUtils.outmagenta("$name in ${currentState.stateName} | $currentMsg | ${Thread.currentThread().getName()} n=${Thread.activeCount()}")
 						 	   
-						if( checkMsgContent( Term.createTerm("syncronize(FREQ)"), Term.createTerm("syncronize(FREQ)"), 
+						if( checkMsgContent( Term.createTerm("syncronize(TIME,FREQ)"), Term.createTerm("syncronize(TIME,FREQ)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								 Timer = payloadArg(0).toLong()  
+								
+												val time = payloadArg(0).toLong()
+												val now = System.currentTimeMillis()
+												val Wait = 1000 - (now-time)
+								delay(Wait)
+								 Timer = payloadArg(1).toLong()  
 						}
 						//genTimer( actor, state )
 					}

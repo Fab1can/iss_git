@@ -1,7 +1,7 @@
 %====================================================================================
 % fireflysync description   
 %====================================================================================
-event( syncronize, syncronize(FREQ) ).
+event( syncronize, syncronize(TIME,FREQ) ).
 event( desyncronize, desyncronize(X) ).
 dispatch( cellstate, cellstate(X,Y,COLOR) ).
 dispatch( distance, distance(D) ).
