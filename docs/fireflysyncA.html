@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="it">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FireFlySync</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+
+<body class="bg-light">
+    <div class="container py-4">
+        <header class="mb-4">
+            <h1 class="display-6 bg-primary-subtle border rounded p-3 mb-0">FireFlySync</h1>
+        </header>
+
+        <main class="card shadow-sm">
+            <div class="card-body">
+                <section class="mb-4">
+                    <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Introduction</h2>
+                    <p class="mb-0">
+                        Simulazione di un sistema di simulazione di 3 lucciole.
+                    </p>
+                </section>
+
+                <section class="mb-4">
+                    <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Requirements</h2>
+                    <div class="bg-body-tertiary border rounded p-3 mb-0">
+                        Costruire il simulatore di un sistema costituito da 3 lucciole. Inizialmente, le lucciole lampeggiamo ciascuna con una frequenza (costante) propria.<br>
+                        Dopo 10 secondi le lucciole devono lampeggiare in modo sincronizzato
+                    </div>
+                </section>
+
+                <section class="mb-3">
+                    <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Requirement analysis
+                    </h2>
+                    <div class="bg-body-tertiary border rounded p-3 mb-0">
+                        Per modellare le entità del sistema utilizzerò la <a href="https://anatali.github.io/issLab2026/_static/docs/Protobook.pdf#chapter.17">libreria QAK</a>, che permette di modellare attori, messaggi e stati in modo semplice e intuitivo.<br>
+                        Nei requisiti viene citato il concetto di lucciola. Il modo più semplice per modellare le lucciole è quello di utilizzare un QAktor che possiederà:
+                        <ul>
+                            <li>Una variabile Timer inizializzata con un numero pseudocasuale compreso tra 1000 e 2000 millisecondi, che rappresenta la frequenza di lampeggio della lucciola</li>
+                            <li>Uno stato flash che accende la lucciola, aspetta il timer, spegne la lucciola e richiama se stesso</li>
+                        </ul>
+                        L'accensione e lo spegnimento della lucciola viene mostrato all'utente appoggiandosi ad un attore esterno griddisplay che al ricevere di un Dispatch cellstate : cellstate(X,Y,COLOR) aggiorna la cella alle coordinate (X,Y) di una griglia con il colore verde se COLOR è 1 e con il colore bianco se COLOR è 0. La lucciola invia questo messaggio ogni volta che deve accendersi o spegnersi.<br>
+
+                        Il modello dell'analisi in linguaggio QAK è visionabile al seguente link: <a href="https://github.com/Fab1can/iss_git/blob/main/fireflysyncA/src/fireflysyncA analisi.qakk">Modello di analisi</a>
+                    </div>
+                </section>
+
+                <section class="mb-3">
+                    <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Problem analysis</h2>
+                    Nel nostro sistema ci saranno più lucciole concettualmente identiche, per cui invece di modellare ogni lucciola singolarmente, la lucciola diventa un QAktor dynamicOnly e si aggiunge un QAktor creator. Creator ha la responsabilità di istanziare le 3 lucciole, e di orchestrare la loro sincronizzazione.<br>
+                    Per modellare la sincronizzazione ho scelto di far aspettare al creator 10 secondi dopo aver istanziato le lucciole, e poi di inviare un evento di sincronizzazione Event syncronize : syncronize(TIME, FREQ) a tutte le lucciole. TIME è l'istante in cui è stato emesso l'evento e FREQ è la frequenza con cui le lucciole devono lampeggiare dopo la sincronizzazione, che viene modellata come un numero pseudocasuale compreso tra 1000 e 2000 millisecondi, generato al momento dell'emissione dell'evento.<br>
+                    Le lucciole hanno la responsabilità sincronizzarsi sulla base dell'istante TIME e sostituire la loro frequenza di lampeggio con FREQ.<br>
+                    Questo viene modellato aggiungendo alla lucciola uno stato che si occupa di ricevere syncronize e modificare Timer.<br>
+                    Si è scelto di modellare il messaggio di sincronizzazione come un evento perché è un messaggio che non richiede una risposta, e che deve essere gestito da tutte le lucciole in modo asincrono.<br>
+                    Il modello del problema è visionabile al seguente link: <a href="https://github.com/Fab1can/iss_git/blob/main/fireflysyncA/src/fireflysyncA.qak">Modello del problema</a>
+                </section>
+
+                <section class="mb-3">
+                    <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Test plans</h2>
+                </section>
+
+                <section class="mb-3">
+                    <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Project</h2>
+                </section>
+
+                <section class="mb-3">
+                    <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Testing</h2>
+                </section>
+
+                <section class="mb-3">
+                    <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Deployment</h2>
+                </section>
+
+                <section class="mb-0">
+                    <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Maintenance</h2>
+                </section>
+            </div>
+        </main>
+
+        <footer class="mt-4">
+            <div
+                class="bg-primary-subtle text-success rounded p-3 d-flex align-items-center justify-content-between flex-wrap gap-3">
+                <div>
+                    <p class="mb-1">By Fabio Cangiano</p>
+                    <p class="mb-1">email: <a
+                            href="mailto:fabio.cangiano@studio.unibo.it">fabio.cangiano@studio.unibo.it</a></p>
+                    <p class="mb-0">GIT repo: <a
+                            href="https://github.com/Fab1can/iss_git">https://github.com/Fab1can/iss_git</a></p>
+                </div>
+                <img src="./img/fabio.jpg" alt="Fabio Cangiano" class="img-thumbnail"
+                    style="max-width: 96px; height: auto;">
+            </div>
+        </footer>
+    </div>
+</body>
+
+</html>
