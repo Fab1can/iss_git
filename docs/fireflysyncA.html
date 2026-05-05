@@ -19,9 +19,9 @@
             <div class="card-body">
                 <section class="mb-4">
                     <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Introduction</h2>
-                    <p class="mb-0">
+                    <div class="bg-body-tertiary border rounded p-3 mb-0">
                         Simulazione di un sistema di simulazione di 3 lucciole.
-                    </p>
+                    </div>
                 </section>
 
                 <section class="mb-4">
@@ -50,12 +50,14 @@
 
                 <section class="mb-3">
                     <h2 class="h5 text-primary border rounded-pill px-3 py-2 bg-success-subtle">Problem analysis</h2>
-                    Nel nostro sistema ci saranno più lucciole concettualmente identiche, per cui invece di modellare ogni lucciola singolarmente, la lucciola diventa un QAktor dynamicOnly e si aggiunge un QAktor creator. Creator ha la responsabilità di istanziare le 3 lucciole, e di orchestrare la loro sincronizzazione.<br>
-                    Per modellare la sincronizzazione ho scelto di far aspettare al creator 10 secondi dopo aver istanziato le lucciole, e poi di inviare un evento di sincronizzazione Event syncronize : syncronize(TIME, FREQ) a tutte le lucciole. TIME è l'istante in cui è stato emesso l'evento e FREQ è la frequenza con cui le lucciole devono lampeggiare dopo la sincronizzazione, che viene modellata come un numero pseudocasuale compreso tra 1000 e 2000 millisecondi, generato al momento dell'emissione dell'evento.<br>
-                    Le lucciole hanno la responsabilità sincronizzarsi sulla base dell'istante TIME e sostituire la loro frequenza di lampeggio con FREQ.<br>
-                    Questo viene modellato aggiungendo alla lucciola uno stato che si occupa di ricevere syncronize e modificare Timer.<br>
-                    Si è scelto di modellare il messaggio di sincronizzazione come un evento perché è un messaggio che non richiede una risposta, e che deve essere gestito da tutte le lucciole in modo asincrono.<br>
-                    Il modello del problema è visionabile al seguente link: <a href="https://github.com/Fab1can/iss_git/blob/main/fireflysyncA/src/fireflysyncA.qak">Modello del problema</a>
+                    <div class="bg-body-tertiary border rounded p-3 mb-0">
+                        Nel nostro sistema ci saranno più lucciole concettualmente identiche, per cui invece di modellare ogni lucciola singolarmente, la lucciola diventa un QAktor dynamicOnly e si aggiunge un QAktor creator. Creator ha la responsabilità di istanziare le 3 lucciole, e di orchestrare la loro sincronizzazione.<br>
+                        Per modellare la sincronizzazione ho scelto di far aspettare al creator 10 secondi dopo aver istanziato le lucciole, e poi di inviare un evento di sincronizzazione Event syncronize : syncronize(TIME, FREQ) a tutte le lucciole. TIME è l'istante in cui è stato emesso l'evento e FREQ è la frequenza con cui le lucciole devono lampeggiare dopo la sincronizzazione, che viene modellata come un numero pseudocasuale compreso tra 1000 e 2000 millisecondi, generato al momento dell'emissione dell'evento.<br>
+                        Le lucciole hanno la responsabilità sincronizzarsi sulla base dell'istante TIME e sostituire la loro frequenza di lampeggio con FREQ.<br>
+                        Questo viene modellato aggiungendo alla lucciola uno stato che si occupa di ricevere syncronize e modificare Timer.<br>
+                        Si è scelto di modellare il messaggio di sincronizzazione come un evento perché è un messaggio che non richiede una risposta, e che deve essere gestito da tutte le lucciole in modo asincrono.<br>
+                        Il modello del problema è visionabile al seguente link: <a href="https://github.com/Fab1can/iss_git/blob/main/fireflysyncA/src/fireflysyncA.qak">Modello del problema</a>
+                    </div>
                 </section>
 
                 <section class="mb-3">
